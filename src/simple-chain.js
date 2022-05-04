@@ -5,32 +5,36 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 const chainMaker = {
-	newArr: [],
+	finalChain: [],
 
-  getLength() {
-	return this.newArr.length;
-  },
-  addLink(value) {
-    this.newArr.push(`( ${value} )`);
-	 return this;
-  },
-  removeLink(position) {
-    if (position > this.newArr.length|| isNaN(position)||position<=0){
-		 this.newArr = [];
-		 throw new Error("You can't remove incorrect link!");
-	 }
-	 this.newArr.splice(position-1,1);
-	 return this;
-  },
-  reverseChain() {
-	  this.newArr.reverse();
-	  return this;
-  },
-  finishChain() {
-	let res = this.newArr.join('~~');
-	this.newArr = [];
-	return res;
-  }
+	getLength() {
+		return this.finalChain.length;
+	},
+
+	addLink(value) {
+		this.finalChain.push(`( ${value !== undefined ? value : ''} )`);
+		return this;
+	},
+
+	removeLink(position) {
+		if (!Number.isInteger(position) || this.finalChain[position - 1] === undefined) {
+			this.finalChain = [];
+			throw new Error(`You can't remove incorrect link!`);
+		}
+		this.finalChain.splice(position - 1, 1);
+		return this;
+	},
+
+	reverseChain() {
+		this.finalChain.reverse();
+		return this;
+	},
+
+	finishChain() {
+		const res = this.finalChain.join('~~');
+		this.finalChain = [];
+		return res;
+	}
 };
 
 module.exports = {
