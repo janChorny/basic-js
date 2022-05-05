@@ -19,21 +19,26 @@ function transform(arr) {
 	};
 
 	let resultArr =[];
-	for (let i = 0; i < arr.length; i++){
+	for (let i = 0; i < arr.length; i++) {
 		if (arr[i] === '--double-next') {
-			resultArr === arr.splice(i, 1, arr[i + 1]);	
-		} else if (arr[i] === '--discard-prev') {
-			resultArr = arr.splice(i-1, 2);
-		}else if (arr[i] === '--discard-next') {
-			resultArr = arr.splice(i, 2);
+			if (i !== arr.length - 1) {
+				resultArr.push(arr[i + 1])
+			}
 		} else if (arr[i] === '--double-prev') {
-			resultArr = arr.splice(i, 1, arr[i + 1]);
-		}
-		else {
+			if (i !== 0 && arr[i - 2] !== '--discard-next') {
+				resultArr.push(arr[i - 1])
+			}
+		} else if (arr[i] === '--discard-next') {
+			i += 1
+		} else if (arr[i] === '--discard-prev') {
+			if (arr[i - 2] !== '--discard-next') {
+				resultArr.pop()
+			}
+		} else {
 			resultArr.push(arr[i])
 		}
 	}
-	return resultArr;
+	return resultArr
 }
 
 module.exports = {
